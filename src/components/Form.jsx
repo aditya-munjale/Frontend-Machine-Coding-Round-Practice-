@@ -81,7 +81,7 @@ const Form = () => {
               disabled={isDisabled}
               className={`p-3 rounded text-white ${
                 isDisabled
-                  ? "bg-gray-400 cursor-not-allowed"
+                  ? "bg-gray-800 cursor-not-allowed"
                   : "bg-green-400 hover:bg-green-800 "
               }`}
             >
