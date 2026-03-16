@@ -7,6 +7,7 @@ import Accordian from "./components/Accordion";
 import Weather from "./components/Weather";
 import Practice from "./components/Practice";
 import Pagination from "./components/Pagination";
+import EvenOrOdd from "./components/OddOrEven";
 
 const App = () => {
   return (
@@ -20,7 +21,9 @@ const App = () => {
 
       {/* <Practice /> */}
 
-      <Pagination />
+      {/* <Pagination /> */}
+
+      <EvenOrOdd />
     </div>
   );
 };
