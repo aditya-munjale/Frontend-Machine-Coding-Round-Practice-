@@ -8,6 +8,7 @@ import Weather from "./components/Weather";
 import Practice from "./components/Practice";
 import Pagination from "./components/Pagination";
 import EvenOrOdd from "./components/OddOrEven";
+import ReadMore from "./components/ReadMore";
 
 const App = () => {
   return (
@@ -23,7 +24,9 @@ const App = () => {
 
       {/* <Pagination /> */}
 
-      <EvenOrOdd />
+      {/* <EvenOrOdd /> */}
+
+      <ReadMore />
     </div>
   );
 };
