@@ -20,13 +20,13 @@ const App = () => {
 
       {/* <Weather /> */}
 
-      {/* <Practice /> */}
+      <Practice />
 
       {/* <Pagination /> */}
 
       {/* <EvenOrOdd /> */}
 
-      <ReadMore />
+      {/* <ReadMore /> */}
     </div>
   );
 };
