@@ -1,129 +1,95 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 
-function ContactForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
+const TodoList = () => {
+  const [tasks, setTasks] = useState([]);
+  const [getText, setGetText] = useState("");
+  const [checked, setChecked] = useState([]);
+  const [textError, setTextError] = useState("");
 
-  const [nameError, setNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [msgError, setMsgError] = useState("");
-
-  const [successMsg, setSuccessMsg] = useState("");
-
-  // ✅ Name Validation
-  const validateName = (value) => {
-    if (!value.trim()) {
-      setNameError("Name is required");
+  const handleTaskError = (text) => {
+    if (text.trim().length <= 3) {
+      setTextError("Enter a task");
+      return false;
     } else {
-      setNameError("");
+      setTextError("");
+      return true;
     }
   };
 
-  // ✅ Email Validation (Regex)
-  const validateEmail = (value) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const handleClick = () => {
+    if (!handleTaskError(getText)) return;
 
-    if (!value.trim()) {
-      setEmailError("Email is required");
-    } else if (!regex.test(value)) {
-      setEmailError("Invalid email format");
-    } else {
-      setEmailError("");
-    }
+    setTasks([...tasks, getText]);
+    setChecked([...checked, false]);
+    setGetText("");
   };
 
-  // ✅ Message Validation
-  const validateMsg = (value) => {
-    if (!value.trim()) {
-      setMsgError("Message is required");
-    } else {
-      setMsgError("");
-    }
+  const handleCheckBox = (index) => {
+    const updated = [...checked];
+    updated[index] = !updated[index];
+    setChecked(updated);
   };
 
-  // ✅ Form Submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleDelete = (deletedIndex) => {
+    const updatedTasks = tasks.filter((_, index) => {
+      return index !== deletedIndex;
+    });
 
-    // validate all fields
-    validateName(name);
-    validateEmail(email);
-    validateMsg(msg);
-
-    // check errors
-    if (!name || !email || !msg) return;
-    if (nameError || emailError || msgError) return;
-
-    // success
-    setSuccessMsg(`Thank you, ${name}`);
-
-    // reset form
-    setName("");
-    setEmail("");
-    setMsg("");
+    setTasks(updatedTasks);
   };
 
   return (
-    <div>
-      <form
-        className=" w-2xs flex flex-col justify-center items-center"
-        onSubmit={handleSubmit}
-      >
-        <div className="item flex flex-col">
-          <label htmlFor="name">Name:</label>
-          <input
-            className="border"
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              validateName(e.target.value);
-            }}
-          />
-          {nameError && <p className="text-red-700">{nameError}</p>}
-        </div>
+    <div className="flex flex-col items-center mt-10">
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          value={getText}
+          onChange={(e) => {
+            setGetText(e.target.value);
+            handleTaskError(e.target.value);
+          }}
+          placeholder="enter task"
+          className="border px-3 py-2 rounded-md outline-none"
+        />
 
-        <div className="item flex flex-col">
-          <label htmlFor="email">Email:</label>
-          <input
-            className="border"
-            id="email"
-            type="text"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              validateEmail(e.target.value);
-            }}
-          />
-          {emailError && <p className="text-red-700">{emailError}</p>}
-        </div>
-
-        <div className="item flex flex-col">
-          <label htmlFor="msg">Message:</label>
-          <input
-            className="border"
-            id="msg"
-            type="text"
-            value={msg}
-            onChange={(e) => {
-              setMsg(e.target.value);
-              validateMsg(e.target.value);
-            }}
-          />
-          {msgError && <p className="text-red-700">{msgError}</p>}
-        </div>
-
-        <button className="border bg-amber-300 mt-5 p-2 rounded" type="submit">
-          Submit
+        <button
+          onClick={handleClick}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          Add
         </button>
-      </form>
+      </div>
 
-      {/* ✅ Success Message */}
-      {successMsg && <h1 className="font-bold">{successMsg}</h1>}
+      {textError && <p className="text-red-500 mb-2">{textError}</p>}
+
+      <ul className="w-80">
+        {tasks.map((task, index) => (
+          <li
+            key={index}
+            className="flex items-center justify-between border p-2 mb-2 rounded-md"
+          >
+            <div className="flex items-center gap-2">
+              <input type="checkbox" onClick={() => handleCheckBox(index)} />
+
+              <span
+                className={checked[index] ? "line-through text-gray-400" : ""}
+              >
+                {task}
+              </span>
+            </div>
+
+            <button
+              onClick={() => handleDelete(index)}
+              className="text-red-500"
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default ContactForm;
+export default TodoList;
